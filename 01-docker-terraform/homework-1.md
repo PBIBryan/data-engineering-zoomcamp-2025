@@ -25,7 +25,8 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
-#24.3.1
+# Question 1 Answer
+ 24.3.1
 
 ## Question 2. Understanding Docker networking and docker-compose
 
@@ -71,7 +72,9 @@ volumes:
 
 If there are more than one answers, select only one of them
 
-# db:5432 because that is where the postgres database is. 
+# Question 2 Answer
+db:5432 because that is where the postgres database is. 
+
 ##  Prepare Postgres
 
 Run Postgres and load data as shown in the videos
