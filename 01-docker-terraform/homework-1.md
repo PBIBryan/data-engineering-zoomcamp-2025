@@ -25,7 +25,7 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
-##24.3.1
+#24.3.1
 
 ## Question 2. Understanding Docker networking and docker-compose
 
@@ -109,14 +109,14 @@ Answers:
 - 104,793;  202,661;  109,603;  27,678;  35,189
 - 104,838;  199,013;  109,645;  27,688;  35,202
 
-# Question 3.1
-# root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime
-#   < '2019-11-01' and trip_distance <=1
-# +--------+
-# | count  |
-# |--------|
-# | 104802 |
-# +--------+
+# Question 3.1 Answer
+ root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime
+   < '2019-11-01' and trip_distance <=1
+ +--------+
+ | count  |
+ |--------|
+ | 104802 |
+ +--------+
 
 
 ## Question 4. Longest trip for each day
