@@ -25,7 +25,7 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
-# Question 1 Answer
+## Question 1 Answer
  24.3.1
 
 ## Question 2. Understanding Docker networking and docker-compose
@@ -72,7 +72,7 @@ volumes:
 
 If there are more than one answers, select only one of them
 
-# Question 2 Answer
+## Question 2 Answer
 db:5432 because that is where the postgres database is. 
 
 ##  Prepare Postgres
@@ -112,14 +112,48 @@ Answers:
 - 104,793;  202,661;  109,603;  27,678;  35,189
 - 104,838;  199,013;  109,645;  27,688;  35,202
 
-# Question 3.1 Answer
+## Question 3.1 Answer
  root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime
    < '2019-11-01' and trip_distance <=1
+
  +--------+
  | count  |
  |--------|
  | 104802 |
  +--------+
+
+## Question 3.2 Answer
+root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime < '2019-11-01' and trip_distance >1 and trip_distance <=3
++--------+
+| count  |
+|--------|
+| 198924 |
++--------+
+
+## Question 3.3 Answer
+root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime < '2019-11-01' and trip_distance >3 and trip_distance <=7
++--------+
+| count  |
+|--------|
+| 109603 |
++--------+
+
+## Question 3.4 Answer
+root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime < '2019-11-01' and trip_distance >7 and trip_distance <=10
++-------+
+| count |
+|-------|
+| 27678 |
++-------+
+
+## Question 3.5 Answer
+root@localhost:ny_taxi> select count(*) from green_taxi_data g where g.lpep_pickup_datetime >='2019-10-01' and g.lpep_dropoff_datetime < '2019-11-01' and trip_distance >=10
++-------+
+| count |
+|-------|
+| 35281 |
++-------+
+
 
 
 ## Question 4. Longest trip for each day
@@ -134,6 +168,15 @@ Tip: For every day, we only care about one single trip with the longest distance
 - 2019-10-26
 - 2019-10-31
 
+## Question 4 Answer
+root@localhost:ny_taxi> select g.lpep_pickup_datetime, trip_distance from green_taxi_data g where trip
+ _distance = (select max(trip_distance) from green_taxi_data) 
++----------------------+---------------+
+| lpep_pickup_datetime | trip_distance |
+|----------------------+---------------|
+| 2019-10-31 23:23:41  | 515.89        |
++----------------------+---------------+
+
 
 ## Question 5. Three biggest pickup zones
 
@@ -146,6 +189,17 @@ Consider only `lpep_pickup_datetime` when filtering by date.
 - East Harlem North, Morningside Heights
 - Morningside Heights, Astoria Park, East Harlem South
 - Bedford, East Harlem North, Astoria Park
+## Question 5 Answer
+root@localhost:ny_taxi> select z."Zone", sum(g.total_amount) as zone_total_amount from green_taxi_data
+  g join zones z on g."PULocationID"= z."LocationID" where g.lpep_pickup_datetime >= '2019-10-18' and 
+ g.lpep_pickup_datetime < '2019-10-19' group by z."Zone" having sum(g.total_amount) >13000
++---------------------+--------------------+
+| Zone                | zone_total_amount  |
+|---------------------+--------------------|
+| East Harlem North   | 18686.68000000008  |
+| East Harlem South   | 16797.260000000053 |
+| Morningside Heights | 13029.790000000034 |
++---------------------+--------------------+
 
 
 ## Question 6. Largest tip
@@ -162,6 +216,26 @@ We need the name of the zone, not the ID.
 - JFK Airport
 - East Harlem North
 - East Harlem South
+
+## Question 6 Answer
+root@localhost:ny_taxi> WITH q as (
+ select p."Zone" as pickup_zone, d."Zone" as dropoff_zone,g.tip_amount
+ from green_taxi_data g
+ join zones p on g."PULocationID"=p."LocationID"
+ join zones d on g."DOLocationID"=d."LocationID"
+ where 
+ g.lpep_pickup_datetime >= '2019-10-01' and g.lpep_pickup_datetime < '2019-11-01'
+ and p."Zone" = 'East Harlem North'
+ )
+ 
+ Select *
+ from q
+ order by 3 DESC limit 1
++-------------------+--------------+------------+
+| pickup_zone       | dropoff_zone | tip_amount |
+|-------------------+--------------+------------|
+| East Harlem North | JFK Airport  | 87.3       |
++-------------------+--------------+------------+
 
 
 ## Terraform
